@@ -1,3 +1,7 @@
 @echo off
 cd /d "%~dp0"
-java -cp "out;lib\mysql-connector-j-8.4.0.jar" cn.turing.web.PetStoreWebServer
+if exist "target\epet-store.jar" (
+    java -jar "target\epet-store.jar"
+) else (
+    java -cp "out;target\classes;lib\*" cn.turing.web.PetStoreWebServer
+)

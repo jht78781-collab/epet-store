@@ -20,6 +20,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -364,8 +365,40 @@ public class PetStoreWebServer {
     }
 
     private void sendServerError(HttpExchange exchange, Exception ex) throws IOException {
-        System.err.println("服务器处理失败：" + ex.getClass().getName());
+        logServerError(ex);
         sendApiError(exchange, 500, "服务器处理失败，请检查后端配置");
+    }
+
+    private void logServerError(Exception ex) {
+        System.err.println("Server error: " + exceptionSummary(ex));
+        Throwable cause = ex.getCause();
+        while (cause != null) {
+            System.err.println("Caused by: " + exceptionSummary(cause));
+            cause = cause.getCause();
+        }
+    }
+
+    private String exceptionSummary(Throwable ex) {
+        StringBuilder summary = new StringBuilder(ex.getClass().getName());
+        if (ex instanceof SQLException) {
+            SQLException sqlException = (SQLException) ex;
+            summary.append(" SQLState=").append(sqlException.getSQLState());
+            summary.append(" ErrorCode=").append(sqlException.getErrorCode());
+        }
+        String message = sanitizeLogValue(ex.getMessage());
+        if (!message.isEmpty()) {
+            summary.append(" message=").append(message);
+        }
+        return summary.toString();
+    }
+
+    private String sanitizeLogValue(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value
+                .replaceAll("(?i)(password=)[^&\\s]+", "$1***")
+                .replaceAll("(?i)(://[^:/\\s]+:)[^@\\s]+(@)", "$1***$2");
     }
 
     private void sendApiError(HttpExchange exchange, int status, String message) throws IOException {

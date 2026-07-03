@@ -3,15 +3,20 @@ package cn.turing.dao;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * DAO 工具类，负责打开数据库连接、关闭资源和执行通用更新操作。
  */
 public class BaseDao {
+    private static final Map<String, String> DOTENV = loadDotEnv();
     private static final String RAW_URL = config(
             "epet.db.url",
             new String[]{"EPET_DB_URL", "DATABASE_URL"},
@@ -39,8 +44,54 @@ public class BaseDao {
             if (value == null || value.trim().isEmpty()) {
                 value = System.getenv(envName);
             }
+            if (value == null || value.trim().isEmpty()) {
+                value = DOTENV.get(envName);
+            }
         }
         return value == null || value.trim().isEmpty() ? defaultValue : value;
+    }
+
+    private static Map<String, String> loadDotEnv() {
+        Path dotEnvPath = Path.of(".env").toAbsolutePath().normalize();
+        if (!Files.isRegularFile(dotEnvPath)) {
+            return Map.of();
+        }
+
+        Map<String, String> values = new LinkedHashMap<>();
+        try {
+            for (String line : Files.readAllLines(dotEnvPath, StandardCharsets.UTF_8)) {
+                if (!line.isEmpty() && line.charAt(0) == '\uFEFF') {
+                    line = line.substring(1);
+                }
+
+                String trimmed = line.trim();
+                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                    continue;
+                }
+                if (trimmed.startsWith("export ")) {
+                    trimmed = trimmed.substring("export ".length()).trim();
+                }
+
+                int separator = trimmed.indexOf('=');
+                if (separator <= 0) {
+                    continue;
+                }
+
+                String key = trimmed.substring(0, separator).trim();
+                String value = trimmed.substring(separator + 1).trim();
+                if (value.length() >= 2) {
+                    char first = value.charAt(0);
+                    char last = value.charAt(value.length() - 1);
+                    if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
+                        value = value.substring(1, value.length() - 1);
+                    }
+                }
+                values.put(key, value);
+            }
+        } catch (Exception ex) {
+            return Map.of();
+        }
+        return values;
     }
 
     private static boolean hasConfig(String propertyName, String envName) {
