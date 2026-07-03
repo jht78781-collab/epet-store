@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: epet-store-api
+    runtime: docker
+    plan: free
+    envVars:
+      - key: EPET_DB_DRIVER
+        value: org.postgresql.Driver
+      - key: DATABASE_URL
+        sync: false
+      - key: EPET_CORS_ORIGINS
+        sync: false

@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "node web/write-config.js"
+  }
+}

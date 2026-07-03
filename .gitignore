@@ -1,0 +1,13 @@
+/.idea/
+/.agents/
+/out/
+/target/
+/lib/
+/课程项目：宠物商店/
+
+*.class
+*.iml
+*.log
+web-server.out
+web-server.err
+屏幕截图*.png

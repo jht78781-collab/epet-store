@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宠物商店</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="账户与概览">
+            <div class="brand">
+                <img src="assets/pet.svg" alt="" class="brand-logo">
+                <div>
+                    <h1>宠物商店</h1>
+                    <p>库存交易台</p>
+                </div>
+            </div>
+
+            <section class="panel account-panel" id="loginPanel">
+                <h2>主人登录</h2>
+                <form id="loginForm" class="login-form">
+                    <label>
+                        <span>用户名</span>
+                        <input type="text" name="name" autocomplete="username" value="tuling" required>
+                    </label>
+                    <label>
+                        <span>密码</span>
+                        <input type="password" name="password" autocomplete="current-password" value="123456" required>
+                    </label>
+                    <button type="submit" class="primary-button">
+                        <span aria-hidden="true">→</span>
+                        登录
+                    </button>
+                </form>
+            </section>
+
+            <section class="panel profile-panel hidden" id="profilePanel">
+                <div class="profile-head">
+                    <div>
+                        <span class="eyebrow">当前主人</span>
+                        <h2 id="ownerName">-</h2>
+                    </div>
+                    <button type="button" class="icon-button" id="logoutButton" title="退出登录" aria-label="退出登录">×</button>
+                </div>
+                <dl class="profile-stats">
+                    <div>
+                        <dt>主人编号</dt>
+                        <dd id="ownerId">-</dd>
+                    </div>
+                    <div>
+                        <dt>元宝</dt>
+                        <dd id="ownerMoney">-</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="panel metric-panel">
+                <h2>概览</h2>
+                <div class="metric-grid">
+                    <div class="metric">
+                        <span>库存</span>
+                        <strong id="stockCount">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>门店</span>
+                        <strong id="storeCount">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>我的宠物</span>
+                        <strong id="ownedCount">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>门店元宝</span>
+                        <strong id="storeBalance">0</strong>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <main class="workspace">
+            <header class="toolbar">
+                <div>
+                    <span class="eyebrow">商城</span>
+                    <h2>库存宠物</h2>
+                </div>
+                <div class="tools">
+                    <label class="search-box">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search" id="searchInput" placeholder="搜索名称或类型">
+                    </label>
+                    <select id="storeFilter" aria-label="按门店筛选">
+                        <option value="0">全部门店</option>
+                    </select>
+                    <button type="button" class="secondary-button" id="refreshButton">
+                        <span aria-hidden="true">↻</span>
+                        刷新
+                    </button>
+                </div>
+            </header>
+
+            <section class="inventory-band" aria-labelledby="inventoryTitle">
+                <div class="section-title">
+                    <h3 id="inventoryTitle">可购买宠物</h3>
+                    <span id="inventoryCount">0 只</span>
+                </div>
+                <div class="pet-grid" id="petGrid" aria-live="polite"></div>
+            </section>
+
+            <section class="owned-band" aria-labelledby="ownedTitle">
+                <div class="section-title">
+                    <h3 id="ownedTitle">我的宠物</h3>
+                    <span id="ownedHint">未登录</span>
+                </div>
+                <div class="owned-list" id="ownedList"></div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

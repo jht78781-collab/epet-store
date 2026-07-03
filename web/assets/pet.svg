@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="宠物">
+  <rect width="120" height="120" rx="18" fill="#e8f3f4"/>
+  <circle cx="42" cy="38" r="13" fill="#177e89"/>
+  <circle cx="78" cy="38" r="13" fill="#df5a4f"/>
+  <circle cx="30" cy="64" r="13" fill="#d99b29"/>
+  <circle cx="90" cy="64" r="13" fill="#3f6fb5"/>
+  <path d="M36 79c0-16 13-30 24-30s24 14 24 30c0 12-10 19-24 19s-24-7-24-19z" fill="#17202a"/>
+</svg>
