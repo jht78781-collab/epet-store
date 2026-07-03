@@ -215,7 +215,7 @@ public class PetStoreWebServer {
     private List<Pet> loadOwnerPets(int ownerId) throws Exception {
         PetDao petDao = new PetDaoImpl();
         String sql = "select id, name, typename, health, love, birthday, owner_id, store_id from pet where owner_id = ? order by id";
-        return petDao.selectPet(sql, new String[]{String.valueOf(ownerId)});
+        return petDao.selectPet(sql, new Object[]{ownerId});
     }
 
     private void handleStatic(HttpExchange exchange) throws IOException {

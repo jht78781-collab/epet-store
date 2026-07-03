@@ -30,10 +30,10 @@ public class PetStoreServiceImpl implements PetStoreService {
     @Override
     public List<Pet> getPetsInstock(int storeId) throws Exception {
         String sql = "select id, name, typename, health, love, birthday, owner_id, store_id from pet where owner_id is null";
-        String[] param = null;
+        Object[] param = null;
         if (storeId != 0) {
             sql += " and store_id = ?";
-            param = new String[]{String.valueOf(storeId)};
+            param = new Object[]{storeId};
         }
         sql += " order by id";
         return petDao.selectPet(sql, param);

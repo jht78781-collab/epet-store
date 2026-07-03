@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class PetDaoImpl extends BaseDao implements PetDao {
     @Override
-    public List<Pet> selectPet(String sql, String[] param) throws Exception {
+    public List<Pet> selectPet(String sql, Object[] param) throws Exception {
         List<Pet> pets = new ArrayList<>();
         try {
             openDB();
             psmt = conn.prepareStatement(sql);
             if (param != null) {
                 for (int i = 0; i < param.length; i++) {
-                    psmt.setString(i + 1, param[i]);
+                    psmt.setObject(i + 1, param[i]);
                 }
             }
             rs = psmt.executeQuery();

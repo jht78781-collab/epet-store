@@ -8,7 +8,7 @@ import java.util.List;
  * 宠物 DAO 接口。
  */
 public interface PetDao {
-    List<Pet> selectPet(String sql, String[] param) throws Exception;
+    List<Pet> selectPet(String sql, Object[] param) throws Exception;
 
     int updatePet(String sql, Object[] param) throws Exception;
 }
