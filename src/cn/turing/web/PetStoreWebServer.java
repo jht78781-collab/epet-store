@@ -364,8 +364,8 @@ public class PetStoreWebServer {
     }
 
     private void sendServerError(HttpExchange exchange, Exception ex) throws IOException {
-        ex.printStackTrace();
-        sendApiError(exchange, 500, "服务器处理失败：" + ex.getMessage());
+        System.err.println("服务器处理失败：" + ex.getClass().getName());
+        sendApiError(exchange, 500, "服务器处理失败，请检查后端配置");
     }
 
     private void sendApiError(HttpExchange exchange, int status, String message) throws IOException {
